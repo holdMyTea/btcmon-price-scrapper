@@ -1,0 +1,5 @@
+{
+  "url": "N1",
+  "timestamp": ["time", "updated"],
+  "price": ["bpi", "USD", "rate"]
+}
