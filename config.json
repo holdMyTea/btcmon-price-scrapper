@@ -1,5 +1,10 @@
 {
-  "url": "N1",
-  "timestamp": ["time", "updated"],
-  "price": ["bpi", "USD", "rate"]
+  "get": {
+    "url": "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "timestamp": ["time", "updated"],
+    "price": ["bpi", "USD", "rate"]
+  },
+  "put": {
+    "url": "http://localhost:8080/test"
+  }
 }
