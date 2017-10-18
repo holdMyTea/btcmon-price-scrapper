@@ -10,8 +10,8 @@ async function func () {
   let request = await axios.get(config.get.url)
   const data = request.data
 
-  console.log('Price: ' + parse(data, config.price))
-  console.log('Time: ' + parse(data, config.timestamp))
+  console.log('Price: ' + parse(data, config.get.price))
+  console.log('Time: ' + parse(data, config.get.timestamp))
 
   let response = await axios.put(
     config.put.url,
