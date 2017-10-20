@@ -4,16 +4,19 @@ import axios from 'axios'
 
 import config from './config.json'
 
-func()
+setInterval(func, config.interval * 1000)
 
+// do i need it to be function to use async?
 async function func () {
+  console.log('Func started: ' + new Date().toLocaleString())
+
   let request = await axios.get(config.get.url)
   const data = request.data
 
   console.log('Price: ' + parse(data, config.get.price))
   console.log('Time: ' + parse(data, config.get.timestamp))
 
-  let response = await axios.put(
+  await axios.put(
     config.put.url,
     {
       value: Number(parse(data, config.get.price).replace(',', '')),
@@ -27,5 +30,3 @@ function parse (data, sequence) {
   sequence.forEach((element) => obj = obj[element])
   return obj
 }
-
-/* works with db-service */
