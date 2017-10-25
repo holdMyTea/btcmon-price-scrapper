@@ -1,7 +1,7 @@
 {
-  "interval": 30,
+  "interval": 3,
   "get": {
-    "url": "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "url": "1",
     "timestamp": ["time", "updated"],
     "price": ["bpi", "USD", "rate"]
   },

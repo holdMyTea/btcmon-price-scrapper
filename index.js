@@ -6,7 +6,6 @@ import config from './config.json'
 
 setInterval(func, config.interval * 1000)
 
-// do i need it to be function to use async?
 async function func () {
   console.log('Func started: ' + new Date().toLocaleString())
 
