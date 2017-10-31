@@ -3,23 +3,30 @@
 import axios from 'axios'
 
 import variables from './variables.js'
-import raw from './data.json'
 
-const dataset = raw[variables.DATASET]
+main()
 
-const putURL = 'http://' + variables.PUT_HOST + ':' + variables.PUT_PORT + '/' + dataset.put.collection
-console.log('Put url: ' + putURL)
+async function main () {
+  console.log('http://' + variables.CONFIG_HOST + ':' + variables.CONFIG_PORT + '/price-scrapper/' + variables.DATASET)
+  let request
 
-setInterval(func, variables.INTERVAL * 1000)
+  try {
+    request = await axios.get('http://' + variables.CONFIG_HOST + ':' + variables.CONFIG_PORT + '/price-scrapper/' + variables.DATASET)
+  } catch (err) {
+    console.log(err)
+  }
 
-async function func () {
-  console.log('Func started: ' + new Date().toLocaleString())
+  const dataset = request.data.data
+  const putURL = 'http://' + variables.PUT_HOST + ':' + variables.PUT_PORT + '/' + request.data.name
 
-  let request = await axios.get(dataset.get.url)
+  setInterval(dataRequest, variables.INTERVAL * 1000, putURL, dataset)
+}
+
+async function dataRequest (putURL, dataset) {
+  const request = await axios.get(dataset.get.url)
   const data = request.data
 
-  console.log('Price: ' + parse(data, dataset.get.price))
-  console.log('Time: ' + parse(data, dataset.get.timestamp))
+  console.log('Time: ' + parse(data, dataset.get.timestamp) + ' Price: ' + parse(data, dataset.get.price))
 
   await axios.put(
     putURL,

@@ -1,4 +1,4 @@
-export default ['PUT_HOST', 'PUT_PORT', 'DATASET', 'INTERVAL']
+export default ['PUT_HOST', 'PUT_PORT', 'DATASET', 'INTERVAL', 'CONFIG_HOST', 'CONFIG_PORT']
 .reduce((acc, val) => {
   if (process.env[val]) {
     acc[val] = process.env[val]
