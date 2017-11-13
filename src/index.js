@@ -23,18 +23,25 @@ async function main () {
 }
 
 async function dataRequest (putURL, dataset) {
-  const request = await axios.get(dataset.get.url)
-  const data = request.data
+  const newRequest = await axios.get(dataset.get.url)
+  const newdata = newRequest.data
 
-  console.log('Time: ' + parse(data, dataset.get.timestamp) + ' Price: ' + parse(data, dataset.get.price))
+  const newValue = Number(parse(newdata, dataset.get.price).replace(',', ''))
+  const newTime = adjustTimeFormat(parse(newdata, dataset.get.timestamp), dataset.get.timeformat)
 
-  await axios.put(
-    putURL,
-    {
-      value: Number(parse(data, dataset.get.price).replace(',', '')),
-      timestamp: adjustTimeFormat(parse(data, dataset.get.timestamp), dataset.get.timeformat)
-    }
-  )
+  const oldRequest = await axios.get(putURL + '/lastInsert')
+  const oldTime = new Date(oldRequest.data).getTime()
+
+  if (newTime > oldTime) {
+    console.log('Puttin\' in new value: ' + newValue + ' at ' + newTime)
+    await axios.put(
+      putURL,
+      {
+        value: newValue,
+        timestamp: newTime
+      }
+    )
+  }
 }
 
 function parse (data, sequence) {
@@ -45,8 +52,8 @@ function parse (data, sequence) {
 
 function adjustTimeFormat (rawTime, timeformat) {
   if (timeformat === 'unix') {
-    return rawTime * 1e3
+    return new Date(rawTime * 1e3).getTime()
   } else if (timeformat === 'mills') {
-    return rawTime
+    return new Date(rawTime).getTime()
   }
 }
